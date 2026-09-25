@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-paper: 245 246 248;   /* #F5F6F8 */
+    --color-surface: 255 255 255; /* #FFFFFF */
+    --color-ink: 20 24 31;        /* #14181F */
+    --color-muted: 91 100 114;    /* #5B6472 */
+    --color-border: 226 229 234;  /* #E2E5EA */
+  }
+
+  .dark {
+    --color-paper: 13 15 19;      /* page background */
+    --color-surface: 23 26 32;    /* panels/cards */
+    --color-ink: 237 239 243;     /* primary text */
+    --color-muted: 145 152 165;   /* secondary text */
+    --color-border: 42 47 56;     /* hairlines */
+  }
+
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html, body {
+    @apply bg-paper text-ink transition-colors duration-150;
+  }
+  ::selection {
+    @apply bg-cobalt-100 text-cobalt-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-md bg-cobalt-500 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-cobalt-600 disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:opacity-50;
+  }
+  .input {
+    @apply w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-cobalt-500 focus:outline-none focus:ring-1 focus:ring-cobalt-500;
+  }
+  .panel {
+    @apply rounded-lg border border-border bg-surface shadow-panel;
+  }
+}
