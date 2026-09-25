@@ -86,11 +86,11 @@ export default function ContactTable({
         {showDepartmentFilter && (
           <select className="input w-auto" value={deptFilter} onChange={(e) => setDeptFilter(e.target.value as any)}>
             <option value="all">All departments</option>
-            {Object.entries(DEPARTMENT_LABELS).filter(([v]) => v !== 'admin').map(([value, label]) => (
+            {Object.entries(DEPARTMENT_LABELS).filter(([v]) => v !== 'admin' && v !== 'dim').map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
             ))}
           </select>
-                )}
+        )}
         {isAdminView && owners.length > 0 && (
           <select className="input w-auto" value={ownerFilter} onChange={(e) => setOwnerFilter(e.target.value)}>
             <option value="all">All OCs</option>

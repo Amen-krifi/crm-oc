@@ -102,7 +102,7 @@ export default function CreateMemberForm() {
             </button>
           </div>
           <p className="mt-1 text-xs text-muted">
-            Auto-generated — edit it if you'd rather set your own. You'll share this with the new member yourself.
+            Auto-generated — edit it if you&apos;d rather set your own. You&apos;ll share this with the new member yourself.
           </p>
         </div>
 

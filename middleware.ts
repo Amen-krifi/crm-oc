@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { canAccessPath } from './lib/auth';
 import type { Department } from './lib/types';
 
-const PUBLIC_PATHS = ['/login'];
+const PUBLIC_PATHS = ['/login', '/api'];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request: { headers: request.headers } });

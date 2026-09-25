@@ -23,7 +23,10 @@ export default function ContactFormModal({
   const [dept, setDept] = useState<Department>(department === 'admin' ? 'logistics' : department);
   const [name, setName] = useState('');
   const [organization, setOrganization] = useState('');
-  const [category, setCategory] = useState<ContactCategory>(CATEGORY_BY_DEPARTMENT[dept][0]);
+  const safeDept = (CATEGORY_BY_DEPARTMENT[dept] ? dept : 'logistics') as Department;
+  const [category, setCategory] = useState<ContactCategory>(
+    (CATEGORY_BY_DEPARTMENT[safeDept] || CATEGORY_BY_DEPARTMENT['logistics'])[0]
+  );
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [status, setStatus] = useState<PipelineStatus>('new');
@@ -32,7 +35,8 @@ export default function ContactFormModal({
 
   function handleDeptChange(next: Department) {
     setDept(next);
-    setCategory(CATEGORY_BY_DEPARTMENT[next][0]);
+    const validCategories = CATEGORY_BY_DEPARTMENT[next] || CATEGORY_BY_DEPARTMENT['logistics'];
+    setCategory(validCategories[0]);
   }
 
   async function handleSubmit(e: React.FormEvent) {

@@ -17,7 +17,7 @@ export default async function SettingsPage() {
     <div className="max-w-2xl">
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-ink">Settings</h1>
-        <p className="text-sm text-muted">Your account, and system-wide settings if you're an admin.</p>
+        <p className="text-sm text-muted">Your account, and system-wide settings if you&apos;re an admin.</p>
       </div>
 
       <div className="panel mb-6 p-5">

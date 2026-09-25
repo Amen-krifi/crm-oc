@@ -1,0 +1,8 @@
+{
+  "name": "Organizing Committee CRM",
+  "description": "Internal CRM for managing contacts, outreach pipelines, interactions, and team performance across departments.",
+  "prompt": "Organizing Committee CRM",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -28,10 +28,24 @@ export default function LoginPage() {
       if (error) setError(error.message);
       else window.location.assign('/dashboard');
     } else {
+      let dbDepartment: 'logistics' | 'sales' | 'pr_marketing' | 'admin' = 'logistics';
+      if (department === 'sales') dbDepartment = 'sales';
+      else if (department === 'marketing' || department === 'participant_xp_pr' || department === 'pr_marketing') dbDepartment = 'pr_marketing';
+      else if (department === 'admin' || department === 'dim') dbDepartment = 'admin';
+
+      const role = department === 'dim' ? 'ocvp_dim' : department === 'admin' ? 'ocvp' : 'oc_member';
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { name, department } }
+        options: {
+          data: {
+            name,
+            department: dbDepartment,
+            oc_department: department,
+            role
+          }
+        }
       });
       if (error) setError(error.message);
       else window.location.assign('/dashboard');

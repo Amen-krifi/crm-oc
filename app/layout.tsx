@@ -15,8 +15,8 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'OC CRM',
-  description: 'Internal CRM for the Organizing Committee'
+  title: 'Organizing Committee CRM',
+  description: 'Internal CRM for managing contacts, outreach pipelines, interactions, and team performance across departments.'
 };
 
 // Runs before React hydrates so the page never flashes the wrong theme.
@@ -33,7 +33,7 @@ const THEME_INIT_SCRIPT = `
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${plexSans.variable} ${plexMono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>

@@ -52,11 +52,25 @@ export async function createTeamMember(formData: FormData): Promise<CreateMember
     return { error: e instanceof Error ? e.message : 'Admin client is not configured.' };
   }
 
+  let dbDepartment: 'logistics' | 'sales' | 'pr_marketing' | 'admin' = 'logistics';
+  if (department === 'sales') dbDepartment = 'sales';
+  else if (department === 'marketing' || department === 'participant_xp_pr' || department === 'pr_marketing') dbDepartment = 'pr_marketing';
+  else if (department === 'admin' || department === 'dim') dbDepartment = 'admin';
+
+  let role = 'oc_member';
+  if (department === 'dim') role = 'ocvp_dim';
+  else if (department === 'admin') role = 'ocvp';
+
   const { error } = await admin.auth.admin.createUser({
     email,
     password,
     email_confirm: true,
-    user_metadata: { name, department }
+    user_metadata: {
+      name,
+      department: dbDepartment,
+      oc_department: department,
+      role
+    }
   });
 
   if (error) return { error: error.message };

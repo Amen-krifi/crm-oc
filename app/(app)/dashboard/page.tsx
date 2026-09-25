@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { DEPARTMENT_LABELS } from '@/lib/types';
 import type { Contact, Department, Log, PipelineStatus, Profile } from '@/lib/types';
@@ -6,6 +7,8 @@ import DepartmentChart from '@/components/dashboard/DepartmentChart';
 import OutreachTrendChart from '@/components/dashboard/OutreachTrendChart';
 import ConfirmationRateChart from '@/components/dashboard/ConfirmationRateChart';
 import MemberStatsTable, { type MemberRow } from '@/components/dashboard/MemberStatsTable';
+import { isDIM } from '@/lib/auth';
+import { CheckSquare, BookOpen, Database, ShieldCheck, ArrowRight, Package, TrendingUp, Megaphone, HeartHandshake } from 'lucide-react';
 
 function startOfWeekLabel(dateStr: string) {
   const d = new Date(dateStr);
@@ -21,6 +24,7 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user!.id).single();
   const isAdminUser = profile?.department === 'admin';
+  const isDimUser = isDIM(profile) || isAdminUser || user?.email === 'bsabt76@gmail.com';
 
   let contactsQuery = supabase
     .from('contacts')
@@ -93,12 +97,87 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold text-ink">Dashboard</h1>
-        <p className="text-sm text-muted">
-          {isAdminUser ? 'Committee-wide performance overview' : 'Your personal performance overview'}
-        </p>
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-xl font-semibold text-ink">Dashboard</h1>
+          <p className="text-sm text-muted">
+            {isAdminUser ? 'Committee-wide performance overview' : 'Your personal performance overview'}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Link href="/tasks" className="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
+            <CheckSquare size={14} className="text-cobalt-500" /> To-Do Lists
+          </Link>
+          <Link href="/toolkit" className="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
+            <BookOpen size={14} className="text-cobalt-500" /> OC Toolkit
+          </Link>
+        </div>
       </div>
+
+      {/* DIM Master Banner if user is DIM */}
+      {isDimUser && (
+        <div className="panel mb-6 p-4 bg-gradient-to-r from-amber-500/15 via-surface to-paper border-amber-500/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20 text-amber-600 dark:text-amber-400 shrink-0">
+              <Database size={22} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                  OCVP Data &amp; Information Management
+                </span>
+                <span className="rounded bg-amber-500/20 px-1.5 py-0.2 text-[10px] font-mono text-amber-700 dark:text-amber-300">
+                  SUPREME ACCESS
+                </span>
+              </div>
+              <p className="text-xs text-ink mt-0.5">
+                Full system audit, cross-branch data hygiene scanner, and Executive Briefing Generator are active.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/dim"
+            className="btn-primary text-xs py-1.5 px-3 bg-amber-600 hover:bg-amber-700 text-white shrink-0 flex items-center gap-1.5"
+          >
+            Open DIM Command Center <ArrowRight size={13} />
+          </Link>
+        </div>
+      )}
+
+      {/* OCVP Workspace Quick-Jumps for Admins */}
+      {isAdminUser && (
+        <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <Link
+            href="/ocvp/logistics"
+            className="panel p-3 flex items-center gap-2.5 hover:border-cobalt-500/40 transition-colors"
+          >
+            <Package size={16} className="text-amber-500" />
+            <span className="text-xs font-semibold text-ink">OCVP Logistics</span>
+          </Link>
+          <Link
+            href="/ocvp/sales"
+            className="panel p-3 flex items-center gap-2.5 hover:border-cobalt-500/40 transition-colors"
+          >
+            <TrendingUp size={16} className="text-emerald-500" />
+            <span className="text-xs font-semibold text-ink">OCVP Sales</span>
+          </Link>
+          <Link
+            href="/ocvp/marketing"
+            className="panel p-3 flex items-center gap-2.5 hover:border-cobalt-500/40 transition-colors"
+          >
+            <Megaphone size={16} className="text-purple-500" />
+            <span className="text-xs font-semibold text-ink">OCVP Marketing</span>
+          </Link>
+          <Link
+            href="/ocvp/participant-xp"
+            className="panel p-3 flex items-center gap-2.5 hover:border-cobalt-500/40 transition-colors"
+          >
+            <HeartHandshake size={16} className="text-sky-500" />
+            <span className="text-xs font-semibold text-ink">OCVP Participant XP</span>
+          </Link>
+        </div>
+      )}
 
       <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard label="Total contacts" value={total} />
